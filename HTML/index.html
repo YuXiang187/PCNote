@@ -1,0 +1,860 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width initial-scale=1'>
+    <title>主页</title>
+</head>
+<style>
+    :root {
+        --bg-color1: hsl(220, 13%, 18%);
+        --bg-color5: rgb(29, 31, 35);
+        --text-color1: hsl(220, 6%, 71%);
+        --text-color3: hsl(192, 6%, 40%);
+        --text-color5: rgba(170, 178, 180, 0.5);
+        --link-color: rgb(197, 202, 210);
+        --table-border-color: rgb(100, 104, 116);
+        --table-bg-color: rgb(40, 44, 52);
+        --table-bg-darker-color: rgb(35, 40, 46);
+        --hover-text-color: white;
+        --input-color: rgb(29, 31, 35);
+        --menu-divider-color: hsl(220, 5%, 40%);
+        --scrollbar-thumb-color: var(--menu-divider-color);
+        --scrollbar-track-color: rgba(95, 97, 101, 0.3);
+        --focus-color: rgba(100, 100, 100, 0.8);
+        --text-color: var(--text-color1);
+        --bg-color: var(--bg-color1);
+    }
+
+    html {
+        overflow-x: initial !important;
+        font-size: 16px;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+        margin: 0;
+        background: url(".background.png") no-repeat fixed;
+        line-height: 1.6;
+    }
+
+    #goUp {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 30px;
+        z-index: 99;
+        border: none;
+        outline: none;
+        background-color: #1d1f23;
+        color: #b1b4b9;
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 10px;
+    }
+
+    .popup {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 2;
+        visibility: hidden;
+        opacity: 0;
+        overflow: hidden;
+        -webkit-transition: .64s ease-in-out;
+        transition: .64s ease-in-out;
+    }
+
+    .popup-inner {
+        position: relative;
+        bottom: -100vw;
+        right: -100vh;
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        max-width: 800px;
+        max-height: 600px;
+        width: 60%;
+        height: 80%;
+        background-color: #282c34;
+        -webkit-transform: rotate(32deg);
+        transform: rotate(32deg);
+        -webkit-transition: .60s ease-in-out;
+        transition: .60s ease-in-out;
+    }
+
+    .popup_allText {
+        display: flex;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 1rem;
+    }
+
+    .popup:target {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .popup:target .popup-inner {
+        bottom: 0;
+        right: 0;
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+
+    .popup_close {
+        position: absolute;
+        right: -0.5rem;
+        top: -0.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        font-size: .875rem;
+        font-weight: 300;
+        border-radius: 100%;
+        color: #282c34;
+        background-color: #b1b4b9;
+        z-index: 4;
+        line-height: 1.5rem;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    #write {
+        margin: 0 auto;
+        height: auto;
+        width: inherit;
+        word-break: normal;
+        overflow-wrap: break-word;
+        position: relative;
+        white-space: normal;
+        overflow-x: visible;
+        padding-top: 36px;
+        display: block !important;
+        visibility: visible;
+        opacity: 1;
+        transition: 0.3s;
+        max-width: 1200px;
+        padding-left: 70px;
+        padding-right: 70px;
+    }
+
+    textarea {
+        background-color: #282c34;
+        border-style: solid;
+        resize: none;
+        outline: 0;
+    }
+
+    button, input, textarea {
+        color: inherit;
+        font: inherit;
+    }
+
+    p {line-height: inherit;}
+
+    h1, h5 {
+        break-after: avoid-page;
+        break-inside: avoid;
+        orphans: 4;
+    }
+
+    p {orphans: 4;}
+
+    h1 {font-size: 2rem;}
+
+    h5 {font-size: 1.2rem;}
+
+    a {cursor: pointer;}
+
+    tr {
+        break-inside: avoid;
+        break-after: auto;
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        overflow: auto;
+        break-inside: auto;
+        text-align: left;
+    }
+
+    blockquote {margin: 1rem 0;}
+
+    li {
+        margin: 0;
+        position: relative;
+    }
+
+    blockquote > :last-child {margin-bottom: 0;}
+
+    blockquote > :first-child, li > :first-child {margin-top: 0;}
+
+    code {
+        font-family: "Lucida Console", serif;
+        text-align: left;
+        vertical-align: initial;
+        font-size: 0.9em;
+        background-color: var(--bg-color5);
+        border-radius: 6px;
+        padding: 4px 4px 4px 4px;
+        margin: 0 0 0 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    table tr th {border-bottom: 0;}
+
+    #write a:not([role="menuitem"]) {color: var(--link-color) !important;}
+
+    #write a:not([role="menuitem"]):hover {color: var(--hover-text-color) !important;}
+
+    #write h1, #write h5 {
+        margin-top: 0.5em;
+        margin-bottom: 0;
+        line-height: 1em;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        padding-top: 0.3em;
+    }
+
+    #write h1 {
+        font-size: 2.5em;
+        padding-bottom: 0.5em;
+        border-bottom: 3px double var(--text-color5);
+    }
+
+    #write h5 {font-size: 1.35em;}
+
+    hr {
+        height: 1px;
+        background-color: var(--text-color5);
+        border: 0;
+    }
+
+    ul, ol {padding-left: 30px;}
+
+    blockquote {
+        border-left: 4px solid var(--text-color1);
+        padding: 4px 15px;
+        color: var(--text-color1);
+        background-color: var(--bg-color5);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    table tr th {
+        font-weight: bold;
+        border-left: 1px solid var(--table-border-color);
+        border-right: 1px solid var(--table-border-color);
+        text-align: left;
+        margin: 0;
+        padding: 6px 13px;
+    }
+
+    table tbody tr {
+        border-top: 1px solid var(--table-border-color);
+        margin: 0;
+        padding: 0;
+    }
+
+    table tbody tr:nth-child(2n) {background-color: var(--table-bg-darker-color);}
+
+    table tbody tr:nth-child(2n + 1) {background-color: var(--table-bg-color);}
+
+    table tr td {
+        border-left: 1px solid var(--table-border-color);
+        border-right: 1px solid var(--table-border-color);
+        text-align: left;
+        margin: 0;
+        padding: 6px 13px;
+    }
+
+    table tr th:first-child, table tr td:first-child {border-left-width: 0;}
+
+    table tr th:last-child, table tr td:last-child {border-right-width: 0;}
+
+    input {
+        background-color: var(--input-color) !important;
+        border: 0 !important;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    input[type="checkbox"]:not([disabled]):not(:checked):hover:before {
+        content: "\2713";
+        font-size: 0.9rem;
+        line-height: 1.2rem;
+        color: var(--text-color3);
+    }
+
+    input[type="radio"]:not([disabled]):not(:checked):hover:before {
+        content: "\25CF";
+        font-size: 1rem;
+        line-height: 1rem;
+        color: var(--text-color3);
+    }
+
+    :focus {outline-color: var(--focus-color);}
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        padding-right: 10px;
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    ::-webkit-scrollbar-track:hover {
+        background-color: var(--scrollbar-track-color) !important;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb:active {
+        background-color: var(--scrollbar-thumb-color) !important;
+        border-radius: 4px;
+    }
+</style>
+<body>
+<div>
+    <div id='write'><h1 style="text-align:center"><span id="localtime">欢迎来到导航页！</span></h1>
+        <h5 style="text-align:center"><i>情绪稳定，活在当下，脚踏实地，不想太多！</i></h5>
+        <blockquote><p><strong><span>常用链接</span></strong></p></blockquote>
+        <table>
+            <tbody>
+            <tr>
+                <td><a href="https://www.bilibili.com/"><span>哔哩哔哩</span></a></td>
+                <td><a href="https://www.aliyundrive.com/drive/"><span>阿里云盘</span></a></td>
+                <td><a href="https://web.shiguangxu.com/home/user"><span>时光序</span></a></td>
+                <td><a href="https://www.zhihu.com/"><span>知乎</span></a></td>
+                <td><a href="https://www.zxx.edu.cn/"><span>云平台</span></a></td>
+                <td><a href="https://image.baidu.com/"><span>百度图片</span></a></td>
+                <td><a href="https://hanyu.baidu.com/"><span>百度汉语</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <blockquote><p><strong><span>工具网站</span></strong></p></blockquote>
+        <table>
+            <tbody>
+            <tr>
+                <td><a title="自由且跨平台的动态数学软件" href="https://www.geogebra.org/"><span>Geogebra</span></a></td>
+                <td><a title="免费文件转换" href="https://convertio.co/zh/"><span>Convertio</span></a></td>
+                <td><a title="批量图像处理" href="https://www.iloveimg.com/zh-cn"><span>iLoveIMG</span></a></td>
+                <td><a title="批量PDF处理" href="https://www.ilovepdf.com/zh-cn"><span>iLovePDF</span></a></td>
+                <td><a href="https://fanyi.youdao.com/"><span>有道翻译</span></a></td>
+                <td><a href="https://wenku.baidu.com/"><span>百度文库</span></a></td>
+                <td><a title="手机电脑互传文件" href="https://filehelper.weixin.qq.com"><span>文件传输</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <ul>
+            <li><u><strong><a class="button" onclick="showAlert()"><span>腾讯课堂开启自动任务</span></a></strong></u><span>（</span><a class="button" href="#ke"><span>如何使用？</span></a><span>）：</span><a class="button" href="#ke1"><span>自动送花</span></a><span> / </span><a class="button" href="#ke2"><span>自动签到</span></a><span> / </span><a class="button" href="#ke3"><span>自动刷屏</span></a><span> / </span><a class="button" href="#ke4"><span>下课自动发886</span></a><span> / </span><a class="button" href="#ke5"><span>显示/隐藏对话框</span></a></li>
+            <li><u><strong><a class="button" onclick="showAlert()"><span>腾讯课堂关闭自动任务</span></a></strong></u><span>（</span><a class="button" href="#ke"><span>如何使用？</span></a><span>）：</span><a class="button" href="#ke6"><span>关闭送花</span></a><span> / </span><a class="button" href="#ke7"><span>关闭签到</span></a><span> / </span><a class="button" href="#ke8"><span>关闭刷屏</span></a><span> / </span><a class="button" href="#ke9"><span>关闭下课提示</span></a><span> / </span><a class="button" href="#ke10"><span>关闭滚动水印</span></a></li>
+        </ul>
+        <blockquote><p><strong><span>实用技巧</span></strong></p></blockquote>
+        <table>
+            <tbody>
+            <tr>
+                <td><a class="button" href="#tip7">标点符号</a></td>
+                <td><a class="button" href="#tip8">文本编辑</a></td>
+                <td><a class="button" href="#tip4">卸载预装</a></td>
+                <td><a class="button" href="#tip5">文件共享</a></td>
+                <td><a class="button" href="#tip1">缓存合并</a></td>
+                <td><a class="button" href="#tip2">U盘图标</a></td>
+                <td><a class="button" href="#tip6">批量输出</a></td>
+                <td><a href="https://www.xmind.cn/faq/question/equation/"><span>LaTeX详解</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <blockquote><p><strong><span>常用资源</span></strong></p></blockquote>
+        <table>
+            <tbody>
+            <tr>
+                <td><a href="http://www.dzkbw.com/"><span>电子课本网</span></a></td>
+                <td><a href="https://www.xuexi.cn/"><span>学习强国</span></a></td>
+                <td><a href="http://www.zlcool.com/"><span>资料库</span></a></td>
+                <td><a href="https://www.shijuan1.com/"><span>第一试卷网</span></a></td>
+                <td><a href="https://www.xkb1.com/"><span>新课标第一网</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <ul>
+            <li><a href='https://archlinux.org/'><span>Arch官网</span></a><span>：系统更新时查看公告</span></li>
+            <li><a href='http://www.cncc7.com/'><span>手写输入</span></a><span>：在线网页手写输入法</span></li>
+            <li><a href='https://www.gushiwen.cn/'><span>古诗文网</span></a><span>：海量古诗词解析鉴赏</span></li>
+            <li><a href='https://mail.163.com/'><span>网易邮箱</span></a><span>：免费邮箱服务</span></li>
+            <li><a href='https://zh.numberempire.com/'><span>数字帝国</span></a><span>：数学工具合集</span></li>
+            <li><a href='https://xmsoushu.com/'><span>熊猫搜书</span></a><span>：海量电子书查找</span></li>
+            <li><a href='https://www.qiuziti.com/'><span>求字体</span></a><span>：字体识别与搜索</span></li>
+            <li><a href='https://uncss.7ru.com/'><span>Uncss</span></a><span>：在线精简CSS工具</span></li>
+            <li><a href='https://github.com/'><span>Github</span></a><span>：代码托管服务平台</span></li>
+            <li><a href='https://www.examcoo.com/index/ku'><span>考试酷网</span></a><span>：免费试卷资源</span></li>
+            <li><a href='http://bjtime.cn/riqi/'><span>日期计算器</span></a><span>：计算日期间隔</span></li>
+            <li><a href='https://xiezuocat.com/#/'><span>秘塔写作猫</span></a><span>：Ai智能写作平台</span></li>
+            <li><a href='http://www.5156edu.com/'><span>无忧无虑中学语文网</span></a><span>：免费资料下载</span></li>
+            <li><a href='http://202.85.216.21:8095/review'><span>科大讯飞文本纠错系统</span></a><span>：智能文本纠错系统</span></li>
+        </ul>
+        <blockquote>
+            <p><strong><span>媒体资源</span></strong></p>
+        </blockquote>
+        <table>
+            <tbody>
+            <tr>
+                <td><a title="表情包资源" href="https://www.dbbqb.com/"><span>逗比拯救世界</span></a></td>
+                <td><a title="媒体资源合集" href="https://www.kaolamedia.com/"><span>考拉新媒体</span></a></td>
+                <td><a title="综合素材资源大全" href="https://sc.chinaz.com/"><span>站长素材</span></a></td>
+                <td><a title="综合影视素材资源下载" href="https://www.aigei.com/"><span>爱给网</span></a></td>
+                <td><a title="电影查找" href="https://www.mvcat.com/"><span>MVCAT</span></a></td>
+                <td><a title="字体库" href="https://www.hellofont.cn/home"><span>字由</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <ul>
+            <li><a href='https://www.videvo.net/'><span>Videvo</span></a><span>：免费商用高清视频素材</span></li>
+            <li><a href='https://www.videezy.com/'><span>Videezy</span></a><span>：免费商用高清视频库</span></li>
+            <li><a href='https://www.newcger.com/'><span>NewCGer</span></a><span>：影视后期交流分享社区</span></li>
+            <li><a href='https://www.cgown.com/'><span>CG资源网</span></a><span>：影视特效素材分享交流</span></li>
+            <li><a href='https://www.pexels.com/videos/'><span>Pexels Videos</span></a><span>：免费商用视频库</span></li>
+            <li><a href='https://taira-komori.jpn.org/freesoundcn.html'><span>小森平的免费下载音效</span></a><span>：短时音效下载</span>
+            </li>
+        </ul>
+        <blockquote><p><strong title="全部免费可商用！"><span>图像资源</span></strong></p></blockquote>
+        <table>
+            <tbody>
+            <tr>
+                <td><a title="免费矢量插画素材库" href="https://www.vecteezy.com/"><span>Vecteezy</span></a></td>
+                <td><a title="矢量图库" href="https://undraw.co/illustrations"><span>Undraw</span></a></td>
+                <td><a title="矢量图库" href="https://lukaszadam.com/illustrations"><span>Lukaszadam</span></a></td>
+                <td><a title="矢量图库" href="https://www.opendoodles.com/"><span>Open Doodles</span></a></td>
+                <td><a title="绿色小人矢量图库" href="https://pictogram2.com/"><span>Pictogram</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <ul>
+            <li><a href='https://www.91sotu.com/'><span>搜图导航</span></a><span>：各大图库集合</span></li>
+            <li><a href='https://huaban.com/home/'><span>花瓣</span></a><span>：设计发现采集灵感库</span></li>
+            <li><a href='https://www.nipic.com/'><span>昵图网</span></a><span>：原创素材共享平台</span></li>
+            <li><a href='https://www.iconfinder.com/'><span>IconFinder</span></a><span>：优质矢量彩图图标库</span></li>
+            <li><a href='https://www.pexels.com/zh-cn/'><span>Pexels</span></a><span>：免费商用高清摄影图库</span></li>
+            <li><a href='https://www.iconfont.cn/'><span>IconFont</span></a><span>：阿里巴巴图标库</span></li>
+            <li><a href='https://unsplash.com/'><span>Unsplash</span></a><span>：免费商用摄影图库</span></li>
+            <li><a href='https://www.vcg.com/'><span>视觉中国</span></a><span>：正版图片影视素材</span></li>
+            <li><a href='https://stocksnap.io/'><span>StockSnap</span></a><span>：免费商用摄影图片素材</span></li>
+            <li><a href='https://mixkit.co/art/'><span>Mixkit Art</span></a><span>：视频图片综合</span></li>
+            <li><a href='https://www.cleanpng.com/'><span>CleanPNG</span></a><span>：免抠图素材</span></li>
+        </ul>
+        <blockquote><p><strong><span>音频资源</span></strong></p></blockquote>
+        <table>
+            <tbody>
+            <tr>
+                <td><a title="免费商用音效库" href="https://www.tosound.com/"><span>淘声网</span></a></td>
+                <td><a title="免费商用音效素材库" href="https://www.freesfx.co.uk/"><span>freeSFX</span></a></td>
+                <td><a title="免版税正版音乐音效素材" href="https://audiojungle.net/"><span>AudioJungle</span></a></td>
+                <td><a title="正版音乐音效素材" href="https://100audio.com/"><span>100Audio</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <ul><li><a href='https://www.jamendo.com/'><span>Jamendo Music</span></a><span>：免费音乐旋律素材库</span></li></ul>
+        <blockquote><p><strong><span>壁纸资源</span></strong></p></blockquote>
+        <table>
+            <tbody>
+            <tr>
+                <td><a href="https://wallhaven.cc/"><span>Wallhaven</span></a></td>
+                <td><a href="https://wall.alphacoders.com/?lang=Chinese"><span>Wallpaper Hybss</span></a></td>
+                <td><a href="https://bz.zzzmh.cn/#classify"><span>极简壁纸</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <ul><li><a href='https://irocore.com/'><span>IroCore</span></a><span>：精选配色资源</span></li><li><a class="button" href="#tip3"><span>护眼色合集</span></a><span>：精选护眼颜色代码</span></li></ul>
+        <hr/>
+        <p style="text-align:right"
+           title="About Main Page - by Huang YuXiang 背景图片名称为.background.png">Main Page (Offline Version)</p>
+    </div>
+</div>
+<button onclick="topFunction()" id="goUp" title="点击返回页面顶部">▲</button>
+<div class="popup" id="tip1">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <strong>缓存合并（请先安装FFmpeg）</strong><br>
+            <li>将缓存的<code>audio. m4s</code>文件和<code>video.m4s</code>文件拖到FFmpeg的<code>bin</code>目录下面</li>
+            <li>在这里按住Shift+鼠标右键在菜单内选择打开命令提示符窗口</li>
+            <li>输入<code>.\ffmpeg.exe -i video.m4s -i audio.m4s -codec copy Output.mp4</code>回车即可</li>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="tip2">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <p><strong>U盘图标</strong></p>
+            <p>先在文件夹选项取消勾选<strong>“隐藏已经文件类型的扩展名”和</strong>“显示隐藏的文件”</p>
+            <ol start="">
+                <li>首先制作好一个<code>.ico</code>格式的图片，然后保存在U盘根目录中，并将图标命名为<code>favicon.ico</code></li>
+                <li>U盘根目录新建一个文本文件并命名为<code>autorun.inf</code></li>
+                <li>用记事本工具打开<code>autorun.inf</code>文件，<strong>然后在里面输入下面的内容并保存关闭（注意要区分两行写）</strong><code>[autorun]</code><br><code>icon=favicon.ico</code></li>
+                <li>将<code>autorun.inf</code>和<code>favicon.ico</code>文件<strong>都设置成只读和隐藏</strong></li>
+                <li>将U盘拔出然后插上电脑，OK</li>
+            </ol>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="tip3">
+    <div class="popup-inner">
+        <table>
+            <tbody>
+            <tr>
+                <th><strong>护眼色合集</strong></th>
+                <th><strong>十六进制颜色码</strong></th>
+                <th><strong>RGB颜色值</strong></th>
+            </tr>
+            <tr>
+                <td><div style="color:#19CAAD;">████████████</div></td>
+                <td><div style="color:#19CAAD;">19CAAD</div></td>
+                <td><div style="color:#19CAAD;">25, 202, 173</div></td>
+            </tr>
+            <tr>
+                <td><div style="color:#8CC7B5;">████████████</div></td>
+                <td><div style="color:#8CC7B5;">8CC7B5</div></td>
+                <td><div style="color:#8CC7B5;">140, 199, 181</div></td>
+            </tr>
+            <tr>
+                <td><div style="color:#A0EEE1;">████████████</div></td>
+                <td><div style="color:#A0EEE1;">A0EEE1</div></td>
+                <td><div style="color:#A0EEE1;">160, 238, 225</div></td>
+            </tr>
+            <tr>
+                <td><div style="color:#BEE7E9;">████████████</div></td>
+                <td><div style="color:#BEE7E9;">BEE7E9</div></td>
+                <td><div style="color:#BEE7E9;">190, 231, 233</div></td>
+            </tr>
+            <tr>
+                <td><div style="color:#BEEDC7;">████████████</div></td>
+                <td><div style="color:#BEEDC7;">BEEDC7</div></td>
+                <td><div style="color:#BEEDC7;">190, 237, 199</div></td>
+            </tr>
+            <tr>
+                <td><div style="color:#D6D5B7;">████████████</div></td>
+                <td><div style="color:#D6D5B7;">D6D5B7</div></td>
+                <td><div style="color:#D6D5B7;">214, 213, 183</div></td>
+            </tr>
+            <tr>
+                <td><div style="color:#D1BA74;">████████████</div></td>
+                <td><div style="color:#D1BA74;">D1BA74</div></td>
+                <td><div style="color:#D1BA74;">209, 186, 116</div></td>
+            </tr>
+            <tr>
+                <td><div style="color:#E6CEAC;">████████████</div></td>
+                <td><div style="color:#E6CEAC;">E6CEAC</div></td>
+                <td><div style="color:#E6CEAC;">230, 206, 172</div></td>
+            </tr>
+            <tr>
+                <td><div style="color:#ECAD9E;">████████████</div></td>
+                <td><div style="color:#ECAD9E;">ECAD9E</div></td>
+                <td><div style="color:#ECAD9E;">236, 173, 158</div></td>
+            </tr>
+            <tr>
+                <td><div style="color:#F4606C;">████████████</div></td>
+                <td><div style="color:#F4606C;">F4606C</div></td>
+                <td><div style="color:#F4606C;">244, 96, 108</div></td>
+            </tr>
+            </tbody>
+        </table>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="tip4">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <p><strong>卸载预装</strong></p>
+            <ol>
+                <li><p>下载安装<code>Minimal_ADB_Fastboot_v1.4.3</code>、<code>ADB</code></p></li>
+                <li><p>手机连接电脑，打开<code>调试模式</code>，通知栏连接设置为<code>管理文件</code></p></li>
+                <li><p>进入命令提示符，切换到ADB根目录，然后输入下面命令：</p><p><code>adb devices</code> → <code>adb shell</code></p></li>
+                <li><p>查找包命令：<code>pm list packages</code>（查看包对应程序可以下一个查看包名APP）</p></li>
+                <li><p>卸载包命令：<code>pm uninstall -k --user 0 &lt;package&gt;</code></p></li>
+                <li><p>强制停止vivo系统自动更新命令：<code>pm disable-user com.bbk.updater</code></p></li>
+            </ol>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="tip5">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <p><strong>文件共享</strong></p>
+            <ol>
+                <li>打开<code>计算机管理</code>→<code>本地用户和组</code>，在<code>用户</code>一栏右键点击<code>新用户</code>，该输入的输入，取消勾选<code>下次登陆时须更改密码</code>，勾选<code>用户不能更改密码</code>、<code>密码永不过期</code>，完成后关闭</li>
+                <li>找到<code>共享文件夹</code>，在<code>共享</code>一栏右键点击<code>新建共享</code>，把你需要共享的文件夹填进去，OK</li>
+            </ol>
+            <p><strong>附：Windows7启动电脑时老是要先选择账户的解决办法</strong></p>
+            <ol>
+                <li>按下Win+R运行<code>control userpasswords2</code>命令</li>
+                <li>选择一个需要自动登录的账户，再取消勾选<code>要使用本机、用户必须输入用户名和密码</code>复选框，点击确定即可</li>
+            </ol>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="tip6">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <p><strong>批量输出（文件名）</strong></p>
+            <p>新建一个后缀为<code>.bat</code>的文件，然后往里面输入以下代码：</p>
+            <p><code>DIR *.*/B&gt;filelist.txt</code></p>
+            <p>保存退出后双击运行，打开<code>filelist.txt</code>即可查看输出结果</p>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="tip7">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <p><strong>标点符号（常用）</strong></p>
+            <textarea cols="80" rows="20" readonly="readonly">箭头符号：↑↓←→↖↗↙↘
+标点符号：·〔〕〈〉「」『』【】
+数学符号：×÷±⊥∠≌≤≥∽≈≠∞∵∴‰Δ△°㎡∁∈∉⊆⊇⊂⊃⊊⊋∑∅∩∪┐∀∃≮≯½¾¼
+序号符号：①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳
+罗马符号：ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹ
+汉语拼音：āáǎà ōóǒò ēéěè īíǐì ūúǔù ǖǘǚǜü
+其他符号：⁰¹²³⁴⁵⁶⁷⁸⁹ⁿ₀₁₂₃₄₅₆₇₈₉αβφΩλ℃￥€＄√ηρ</textarea>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="tip8">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <p><strong>文本编辑</strong></p>
+            <textarea cols="80" rows="20"></textarea>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="ke">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <p><strong>如何使用？</strong></p>
+            <p>打开<code>Chrome</code>（当然别的浏览器也行）后打开<code>开发者工具</code>，直接将代码复制到<code>Console</code>栏，按Enter键即可</p>
+            <p><strong>注意事项：</strong></p>
+            <ul>
+                <li>可以后台运行，只要不关闭页面，代码就会一直运行</li>
+                <li>签到成功后会在Console栏输出“XXX时间完成签到”等字样，如果你这里已经签上了老师那边显示没数据，那就是老师网络的问题，老师问你的时候直接说“我签了”就完事了</li>
+                <li>Console栏可以设置只输出<code>Info</code>以屏蔽错误信息</li>
+            </ul>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="ke1">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <p>开启一个<code>3秒</code>送花的定时器：</p>
+            <label for="ketext1"></label><textarea cols="80" rows="20" id="ketext1" readonly="readonly">let flower = setInterval(function () {
+    document.getElementsByClassName("toolbar-icon")[2].click();
+    console.log("送花");
+}, 3000);</textarea>
+            <input type="button" value="复制" onclick="copyText('ketext1')"><br>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="ke2">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <p>开启一个每隔<code>5秒</code>检测一次是否有签到按钮的定时器，有的话就点击：</p>
+            <label for="ketext2"></label><textarea cols="80" rows="20" id="ketext2" readonly="readonly">let btns;
+let attend = setInterval(function () {
+    btns = document.getElementsByClassName("s-btn s-btn--primary s-btn--m");
+    if (btns.length > 0) {
+        console.log(new Date().toLocaleTimeString() + "--完成-->" + btns[0].innerText);
+        btns[0].click();
+    }
+}, 5000);</textarea>
+            <input type="button" value="复制" onclick="copyText('ketext2')"><br>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="ke3">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <p>每隔<code>3秒</code>发送<code>886</code></p>
+            <label for="ketext3"></label><label for="ketext3"></label><textarea cols="80" rows="20" id="ketext3"
+                                                                                readonly="readonly">let say = setInterval(function () {
+    document.getElementsByClassName("ql-editor")[0].firstElementChild.innerText = "886";
+}, 3000);
+let say2 = setInterval(function () {
+    document.getElementsByClassName("text-editor-btn")[0].click();
+}, 3000)</textarea>
+            <input type="button" value="复制" onclick="copyText('ketext3')"><br>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="ke4">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <p>设置好下课的时间，比如我的下课时间是<code>16:50</code>，到时间后自动发送<code>886</code></p>
+            <label for="ketext4"></label><textarea cols="80" rows="20" id="ketext4" readonly="readonly">let targetHour = "16";
+let targetMin = "50";
+let date;
+let inputed = false;
+let timing = setInterval(function () {
+    date = new Date();
+    if (date.getHours() == parseInt(targetHour) && date.getMinutes() == parseInt(targetMin)) {
+        if (!inputed) {
+            document.getElementsByClassName("ql-editor")[0].firstElementChild.innerText = "886"
+            inputed = true;
+        } else {
+            document.getElementsByClassName("text-editor-btn")[0].click();
+            window.clearInterval(timing);
+            console.log("下课咯！");
+        }
+    }
+}, 1000);</textarea>
+            <input type="button" value="复制" onclick="copyText('ketext4')"><br>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="ke5">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <label for="ketext5"></label><textarea cols="80" rows="20" id="ketext5" readonly="readonly">let $switch = document.createElement("span");
+let $body = document.querySelector(".web");
+let show = true;
+$switch.innerText = "显示/隐藏";
+$switch.style = "position:absolute;top:20px;right:460px;color:#AAAAAA;border-radius:10px;cursor:pointer;z-index:3000";
+$switch.onclick = function () {
+    if (show) {
+        document.querySelector(".study-body.mr").style = "right:0;z-index:999";
+        show = false;
+    } else {
+        document.querySelector(".study-body.mr").style = "right:300px;z-index:0";
+        show = true;
+    }
+}
+$body.appendChild($switch);</textarea>
+            <input type="button" value="复制" onclick="copyText('ketext5')"><br>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="ke6">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <label for="ketext6"></label><textarea cols="80" rows="20" id="ketext6" readonly="readonly">if (flower) {
+    window.clearInterval(flower);
+    console.log("已关闭送花");
+}</textarea>
+            <input type="button" value="复制" onclick="copyText('ketext6')"><br>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="ke7">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <label for="ketext7"></label><textarea cols="80" rows="20" id="ketext7" readonly="readonly">if (attend) {
+    window.clearInterval(attend);
+    console.log("已关闭签到");
+}</textarea>
+            <input type="button" value="复制" onclick="copyText('ketext7')"><br>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="ke8">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <label for="ketext8"></label><textarea cols="80" rows="20" id="ketext8" readonly="readonly">if (say) {
+    window.clearInterval(say);
+    window.clearInterval(say2);
+    console.log("已关闭刷屏");
+}</textarea>
+            <input type="button" value="复制" onclick="copyText('ketext8')"><br>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="ke9">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <label for="ketext9"></label><textarea cols="80" rows="20" id="ketext9" readonly="readonly">if (timing) {
+    window.clearInterval(timing);
+    console.log("提前关闭下课提示");
+}</textarea>
+            <input type="button" value="复制" onclick="copyText('ketext9')"><br>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<div class="popup" id="ke10">
+    <div class="popup-inner">
+        <div class="popup_allText">
+            <label for="ketext10"></label><textarea cols="80" rows="20" id="ketext10" readonly="readonly">(function () {
+    'use strict';
+    var head = document.head
+    var style = document.createElement("style")
+    style.type = "text/css"
+    var css = [
+        "a[class*='marquee animation'],txpdiv[class*='player-inject'] {",
+        "    display: none!important;",
+        "}",
+        "#x-tcp-container > txpdiv {",
+        "    display: none!important;",
+        "}",
+    ].join("\n")
+    var text = document.createTextNode(css)
+    style.appendChild(text)
+    head.appendChild(style)
+})();</textarea>
+            <input type="button" value="复制" onclick="copyText('ketext10')"><br>
+        </div>
+        <a class="popup_close" href="#">X</a>
+    </div>
+</div>
+<script type="text/javascript">
+    function scrollFunction() {
+        if (document.body.scrollTop > 180 || document.documentElement.scrollTop > 180) {
+            document.getElementById("goUp").style.display = "block";
+        } else {
+            document.getElementById("goUp").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+    function showAlert() {alert("点我没用哦，请点我右边的那些选项^_^");}
+
+    function copyText(id) {
+        const e = document.getElementById(id);
+        e.select();
+        document.execCommand("Copy");
+        self.location.href = "#"
+    }
+
+    window.onscroll = function () {scrollFunction()};
+
+    setInterval(document.getElementById("localtime").innerHTML = new Date().toLocaleString(), 1000);
+</script>
+</body>
+</html>
