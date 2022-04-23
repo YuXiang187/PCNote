@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width initial-scale=1'>
+    <style>
+        input {
+            background-color: #363B40;
+            text-align: center;
+            font-weight: bold;
+            font-size: 100px;
+            padding: 200px 0 200px 0;
+            outline: none;
+        }
+
+        html, body {
+            background: #363B40;
+            line-height: 1.625rem;
+        }
+
+        html, body, input {
+            color: #b8bfc6;
+            border-color: transparent;
+        }
+
+        p {margin-bottom: 1.5rem;}
+    </style>
+    <title>倒计时</title>
+</head>
+<body>
+<div id="panel">
+    <p style="text-align:center"><input id="timetext" title="Enter：开始/暂停 Esc：重置" onclick="enterText()" placeholder="0时0分0秒" readonly/></p>
+</div>
+<script>
+    let localtime;
+    localtime = 0;
+    let int;
+    let isTime;
+    isTime = false;
+
+    function timer() {
+        localtime = localtime - 1000;
+        const seconds = localtime / 1000;
+        const minutes = seconds / 60;
+        const hours = minutes / 60;
+        document.getElementById("timetext").value = Math.floor(hours % 24) + '时' + Math.floor(minutes % 60) + '分' + Math.floor(seconds % 60) + '秒';
+        if (localtime <= 0) {
+            stop();
+            new Audio("https://fanyi.sogou.com/reventondc/synthesis?text=%E6%97%B6%E9%97%B4%E5%88%B0&speed=1&lang=zh-CHS&from=translateweb&speaker=6").play();
+        }
+    }
+
+    function stop() {
+        window.clearInterval(int);
+        localtime = null;
+        isTime = false;
+        localtime = 0;
+        document.getElementById("timetext").value = null;
+    }
+
+    function enterText() {
+        document.getElementById("panel").addEventListener("keyup", function (e) {
+            switch (e.key) {
+                case 'Enter':
+                    e.preventDefault();
+                    if (localtime === 0) {
+                        localtime = prompt("输入计时时间（单位：分钟）：", "5") * 60000;
+                    } else {
+                        if (isTime === false) {
+                            int = setInterval(timer, 1000);
+                            isTime = true;
+                        } else {
+                            window.clearInterval(int);
+                            isTime = false;
+                        }
+                    }
+                    break;
+                case 'Escape':
+                    e.preventDefault();
+                    stop();
+                    break;
+            }
+        })
+    }
+</script>
+</body>
+</html>

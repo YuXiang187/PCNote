@@ -1,0 +1,133 @@
+<!doctype html>
+<html style='font-size:25px !important' lang="zh-CN">
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width initial-scale=1'>
+    <style>
+        input {
+            background-color: #363B40;
+            text-align: center;
+            font-weight: bold;
+            font-size: 28px;
+            outline: none;
+        }
+
+        html, body {
+            background: #363B40;
+            line-height: 1.625rem;
+        }
+
+        html, body, input {
+            color: #b8bfc6;
+            border-color: transparent;
+        }
+
+        h1, h3, h5 {
+            font-weight: normal;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            line-height: 2.75rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1.5px;
+        }
+
+        h3 {
+            font-size: 1.17rem;
+            line-height: 1.5rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+            font-weight: bold;
+        }
+
+        h5 {
+            font-size: 0.97rem;
+            line-height: 1.25rem;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+        }
+
+        p {margin-bottom: 1.5rem;}
+
+        h1 {margin-top: 2em;}
+    </style>
+    <title>自助听写</title>
+</head>
+<body>
+<div id="main">
+    <h1 style="text-align:center"><span id="title">自助听写</span></h1>
+    <h3 style="text-align:center"><span id="content">此处显示听写内容</span></h3>
+    <p style="text-align:center"><input id="text" title="Enter：下一个/检查对错 Insert：自动填充正确答案 Alt：清空内容" onclick="enterText()" placeholder="请输入你的答案"/></p>
+    <h5 style="text-align:center"><span id="answer">此处显示答案</span></h5>
+</div>
+<script>
+    let line;
+    line = null;
+    let column;
+    column = null;
+    let isRespond;
+    isRespond = false;
+
+    window.onload = function () {
+        document.getElementById("main").addEventListener("drop", function (ev) {
+            ev.preventDefault();
+            let fileReader = new FileReader();
+            fileReader.onload = function () {
+                column = this.result.split("\n");
+                init();
+            }
+            fileReader.readAsText(ev.dataTransfer.files[0], 'utf-8');
+        }, false);
+    }
+
+    const title = document.getElementById("title");
+    let content = document.getElementById("content");
+    let text = document.getElementById("text");
+    let answer = document.getElementById("answer");
+
+    function init() {
+        text.value = "";
+        title.innerHTML = "请回答";
+        line = column[Math.floor(Math.random() * column.length)].split(",");
+        content.innerHTML = line[0];
+        answer.innerHTML = line[1].replaceAll(line[1], '*');
+        isRespond = true;
+    }
+
+    function enterText() {
+        text.addEventListener("keyup", function (e) {
+            switch (e.key) {
+                case 'Enter':
+                    e.preventDefault();
+                    if (column != null) {
+                        switch (isRespond) {
+                            case true:
+                                title.innerHTML = line[1].trim() === text.value.trim() ? "回答正确" : text.value !== "" ? "回答错误" : "未作答";
+                                answer.innerHTML = line[1];
+                                isRespond = line[1].trim() !== text.value.trim();
+                                new Audio("https://fanyi.sogou.com/reventondc/synthesis?text=" + line[1] + "&speed=1&lang=zh-CHS&from=translateweb&speaker=6").play();
+                                break;
+                            case false:
+                                init();
+                                break;
+                        }
+                    } else {
+                        alert("请先拖拽TXT文件上传到本页面！！");
+                        text.value = "";
+                    }
+                    break;
+                case 'Alt':
+                    e.preventDefault();
+                    text.value = "";
+                    break;
+                case 'Insert':
+                    if (column != null) {text.value = line[1];}
+                    break;
+            }
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width initial-scale=1'>
+    <style>
+        input {
+            background-color: #363B40;
+            text-align: center;
+            font-weight: bold;
+            font-size: 100px;
+            padding: 200px 0 200px 0;
+            outline: none;
+        }
+
+        html, body {
+            background: #363B40;
+            line-height: 1.625rem;
+        }
+
+        html, body, input {
+            color: #b8bfc6;
+            border-color: transparent;
+        }
+
+        p {margin-bottom: 1.5rem;}
+    </style>
+    <title>秒表</title>
+</head>
+<body>
+<div id="panel">
+    <p style="text-align:center"><input id="timetext" title="Enter：开始/暂停 Esc：重置" onclick="enterText()" placeholder="0时0分0秒" readonly/></p>
+</div>
+<script>
+    let hour, minute, second;
+    hour = minute = second = 0;
+    let int;
+    let isTime;
+    isTime = false;
+
+    function timer() {
+        second = second + 1;
+        if (second >= 60) {
+            second = 0;
+            minute = minute + 1;
+        }
+
+        if (minute >= 60) {
+            minute = 0;
+            hour = hour + 1;
+        }
+        document.getElementById("timetext").value = hour + '时' + minute + '分' + second + '秒';
+    }
+
+    function enterText() {
+        document.getElementById("panel").addEventListener("keyup", function (e) {
+            switch (e.key) {
+                case 'Enter':
+                    e.preventDefault();
+                    if (isTime === false) {
+                        int = setInterval(timer, 1000);
+                        isTime = true;
+                    } else {
+                        window.clearInterval(int);
+                        isTime = false;
+                    }
+                    break;
+                case 'Escape':
+                    e.preventDefault();
+                    window.clearInterval(int);
+                    hour = minute = second = 0;
+                    isTime = false;
+                    document.getElementById("timetext").value = null;
+                    break;
+            }
+        })
+    }
+</script>
+</body>
+</html>
