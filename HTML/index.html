@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -92,7 +93,6 @@
         width: 60%;
         height: 80%;
         background-color: #282c34;
-        -webkit-transform: rotate(32deg);
         transform: rotate(32deg);
         -webkit-transition: .60s ease-in-out;
         transition: .60s ease-in-out;
@@ -116,7 +116,6 @@
     .popup:target .popup-inner {
         bottom: 0;
         right: 0;
-        -webkit-transform: rotate(0);
         transform: rotate(0);
     }
 
@@ -393,7 +392,6 @@
             </tbody>
         </table>
         <ul>
-            <li><a href='https://archlinux.org/'><span>Arch官网</span></a><span>：系统更新时查看公告</span></li>
             <li><a href='http://www.cncc7.com/'><span>手写输入</span></a><span>：在线网页手写输入法</span></li>
             <li><a href='https://www.gushiwen.cn/'><span>古诗文网</span></a><span>：海量古诗词解析鉴赏</span></li>
             <li><a href='https://mail.163.com/'><span>网易邮箱</span></a><span>：免费邮箱服务</span></li>
@@ -854,7 +852,9 @@ $body.appendChild($switch);</textarea>
 
     window.onscroll = function () {scrollFunction()};
 
-    setInterval(document.getElementById("localtime").innerHTML = new Date().toLocaleString(), 1000);
+    setInterval(function () {
+        document.getElementById("localtime").innerHTML = new Date().toLocaleString();
+    }, 1000);
 </script>
 </body>
 </html>
