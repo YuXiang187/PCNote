@@ -392,8 +392,6 @@ sudo pacman -S proxychains # 终端代理
    export no_proxy="localhost, 127.0.0.1"
    ```
 
-   注：端口号请根据实际进行修改
-
 2. 修改终端配置
 
    ```bash
