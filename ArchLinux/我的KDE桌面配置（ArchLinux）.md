@@ -159,11 +159,54 @@ sudo pacman -S bleachbit
 sudo pacman -S kdeconnect
 ```
 
-### Clash - 科学上网
+### Clash/Proxychains - 科学上网
 
 ```bash
-sudo pacman -S clash
-yay -S clash-for-windows-bin
+yay -S clash-for-windows-bin # 浏览器代理
+sudo pacman -S proxychains # 终端代理
+```
+
+注意：Clash如果无法在终端下载所需的安装文件请自行到AUR主页单击链接下载，下载下来的文件记得改名！
+
+**配置浏览器代理**：
+
+1. 设置系统代理
+
+   ```bash
+   sudo vim /etc/environment
+   ```
+
+   ```bash
+   http_proxy=http://127.0.0.1:7890
+   https_proxy=http://127.0.0.1:7890
+   HTTP_PROXY=http://127.0.0.1:7890
+   HTTPS_PROXY=http://127.0.0.1:7890
+   ```
+
+   注：端口号请根据实际进行修改
+
+2. 打开Clash，将`Port`（端口号）设置为`7890`
+
+3. 在`Profiles`导入机场（订阅地址），然后在`Proxies`设置源即可
+
+4. Chrome临时使用代理：`google-chrome-stable --proxy-server="http://127.0.0.1:7890"`
+
+**配置终端代理**：
+
+```bash
+sudo vim /etc/proxychains.conf
+```
+
+最后一行改为`socks5 127.0.0.1 7890`
+
+**通过sudo保持代理**：
+
+```bash
+vim /etc/sudoers.d/05_proxy
+```
+
+```bash
+Defaults env_keep += "*_proxy *_PROXY"
 ```
 
 ### Sublime Text - 文本编辑
