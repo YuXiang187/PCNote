@@ -250,27 +250,34 @@ EndSection
 安装驱动：
 
 ```bash
-sudo pacman -S nvidia
+sudo pacman -S nvidia # GeForce 920以上
+yay -S nvidia-470xx-dkms # GeForce 630-920
+yay -S nvidia-390xx-dkms # GeForce 400/500/600
+yay -S nvidia-340xx-dkms # GeForce 8/9
 ```
 
-完成后重启系统（因为要屏蔽nouveau内核模块），接着生成Xorg服务器配置文件：
+完成后重启系统（因为要屏蔽nouveau内核模块），接着手动创建配置文件：
 
 ```bash
-nvidia-xconfig
+sudo vim /etc/X11/xorg.conf.d/20-nvidia.conf
+```
+
+```bash
+Section "Device"
+   Identifier     "Device0"
+   Driver         "nvidia"
+   VendorName     "NVIDIA Corporation"
+EndSection
 ```
 
 完成后重启系统即可
 
 **NVIDIA显卡驱动导致部分录屏软件花屏的解决办法**：
 
-打开“NVIDIA X 服务器设置”软件，在`OpenGL Settings`下将“Allow Flipping”选项关掉，完成后关闭软件即可
-
-重启系统后会失效，如果你想永久设置（不推荐，会导致游戏轻微掉帧），那么请：
-
 1. 修改配置文件
 
    ```bash
-   sudo vim /etc/X11/xorg.conf
+   sudo vim /etc/X11/xorg.conf.d/20-nvidia.conf
    ```
 
 2. 如果配置文件中存在DRI，请把它注释掉
@@ -360,6 +367,13 @@ exec dwm
 
 ```bash
 sudo pacman -S pcmanfm
+```
+
+### Clash科学上网
+
+```bash
+sudo pacman -S clash
+yay -S clash-for-windows-bin
 ```
 
 ### 火焰截图
