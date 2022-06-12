@@ -159,6 +159,13 @@ sudo pacman -S bleachbit
 sudo pacman -S kdeconnect
 ```
 
+### Clash - 科学上网
+
+```bash
+sudo pacman -S clash
+yay -S clash-for-windows-bin
+```
+
 ### Sublime Text - 文本编辑
 
 ```bash
