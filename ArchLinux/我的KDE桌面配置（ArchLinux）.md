@@ -177,13 +177,23 @@ sudo pacman -S proxychains # 终端代理
    ```
 
    ```bash
-   http_proxy=http://127.0.0.1:7890
-   https_proxy=http://127.0.0.1:7890
-   HTTP_PROXY=http://127.0.0.1:7890
-   HTTPS_PROXY=http://127.0.0.1:7890
+   export http_proxy="http://127.0.0.1:7890"
+   export https_proxy="http://127.0.0.1:7890"
+   export no_proxy="localhost, 127.0.0.1"
    ```
 
    注：端口号请根据实际进行修改
+
+2. 修改终端配置
+
+   ```bash
+   vim ~/.bashrc
+   ```
+
+   ```bash
+   export http_proxy="http://127.0.0.1:7890"
+   export https_proxy="http://127.0.0.1:7890"
+   ```
 
 2. 打开Clash，将`Port`（端口号）设置为`7890`
 
@@ -191,15 +201,7 @@ sudo pacman -S proxychains # 终端代理
 
 4. Chrome临时使用代理：`google-chrome-stable --proxy-server="http://127.0.0.1:7890"`
 
-**配置终端代理**：
-
-```bash
-sudo vim /etc/proxychains.conf
-```
-
-最后一行改为`socks5 127.0.0.1 7890`
-
-**通过sudo保持代理**：
+**设置sudo保持代理**：
 
 ```bash
 vim /etc/sudoers.d/05_proxy
@@ -208,6 +210,31 @@ vim /etc/sudoers.d/05_proxy
 ```bash
 Defaults env_keep += "*_proxy *_PROXY"
 ```
+
+### Minecraft我的世界
+
+存储Minecraft启动器账户登录信息需要先安装`gnome-keyring`
+
+```bash
+sudo pacman -S gnome-keyring
+```
+
+使用Vim编辑`~/.xinitrc`，添加：
+
+```bash
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export SSH_AUTH_SOCK
+```
+
+最后安装Minecraft：
+
+```bash
+yay -S minecraft-launcher
+```
+
+安装Forge，请前往[https://files.minecraftforge.net](https://files.minecraftforge.net)下载文件，然后使用`java -jar <file>`启动下载的文件
+
+安装Optifine，请前往[https://optifine.net](https://optifine.net)下载文件，然后放到`.minecraft`下的`mods`文件夹
 
 ### Sublime Text - 文本编辑
 
