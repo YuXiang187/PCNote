@@ -1,12 +1,12 @@
 # ArchLinux安装与配置KDE桌面
 
-### 1.更新系统
+## 1.更新系统
 
 ```bash
 pacman -Syyu
 ```
 
-### 2.创建新用户
+## 2.创建新用户
 
 ```bash
 useradd -m -g users -G wheel -s /bin/bash yuxiang
@@ -18,7 +18,7 @@ useradd -m -g users -G wheel -s /bin/bash yuxiang
 passwd yuxiang
 ```
 
-### 3.编辑新用户权限
+## 3.编辑新用户权限
 
 ```bash
 EDITOR=vim visudo
@@ -30,7 +30,7 @@ EDITOR=vim visudo
 
 按<kbd>Esc</kbd>输入`:wq`退出Vim
 
-### 4.安装KDE桌面环境
+## 4.安装KDE桌面环境
 
 ```bash
 pacman -S plasma-meta konsole dolphin bash-completion
@@ -84,7 +84,7 @@ pacman -Syyu
 
 好了，输入`reboot`重启！
 
-### 5.进入桌面的配置
+## 5.进入桌面的配置
 
 进入桌面后，打开`Konsole`终端进行操作
 
@@ -135,7 +135,7 @@ pacman -Syyu
 
 注销重新登录即可看到效果
 
-### 6.配置中文输入法
+## 6.配置中文输入法
 
 安装fcitx输入法
 
@@ -182,9 +182,15 @@ XMODIFIERS DEFAULT=\@im=fcitx5
 
 好了，按下<kbd>Ctrl</kbd>+<kbd>空格</kbd>来切换输入法
 
-### 7.安装显卡驱动
+## 7.安装显卡驱动
 
-#### Intel核心显卡
+如果你不知道显卡情况，可运行以下命令获知：
+
+```bash
+lspci -k | grep -A 2 -E "(VGA|3D)"
+```
+
+### Intel核心显卡
 
 ```bash
 sudo pacman -S xf86-video-intel lib32-mesa vulkan-intel lib32-vulkan-intel
@@ -207,7 +213,7 @@ EndSection
 
 注销或重启即可生效
 
-#### NVIDIA独立显卡
+### NVIDIA独立显卡
 
 安装驱动：
 
@@ -260,3 +266,36 @@ EndSection
    ```
 
 4. 重启系统后生效
+
+### AMD独立显卡
+
+安装驱动：
+
+```bash
+sudo pacman -S lib32-mesa xf86-video-amdgpu vulkan-radeon amdvlk # HD 6000以上
+sudo pacman -S lib32-mesa xf86-video-ati # HD 6000以下
+```
+
+* HD 6000以上
+
+  使用Vim编辑`/etc/X11/xorg.conf.d/20-amdgpu.conf`文件
+
+  ```bash
+  Section "Device"
+       Identifier "AMD"
+       Driver "amdgpu"
+  EndSection
+  ```
+
+* HD 6000以下
+
+  使用Vim编辑`/etc/X11/xorg.conf.d/20-radeon.conf`文件
+
+  ```bash
+  Section "Device"
+      Identifier "Radeon"
+      Driver "radeon"
+  EndSection
+  ```
+
+注销或重启即可生效
