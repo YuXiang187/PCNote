@@ -170,43 +170,19 @@ sudo pacman -S proxychains # 终端代理
 
 **配置浏览器代理**：
 
-1. 设置系统代理
+1. 打开Clash，将`Port`（端口号）设置为`7890`
+2. 在`Profiles`导入机场（订阅地址），然后在`Proxies`设置源即可
+3. Chrome使用代理：`google-chrome-stable --proxy-server="http://127.0.0.1:7890"`
 
-   ```bash
-   sudo vim /etc/environment
-   ```
-
-   ```bash
-   export http_proxy="http://127.0.0.1:7890"
-   export https_proxy="http://127.0.0.1:7890"
-   export no_proxy="localhost, 127.0.0.1"
-   ```
-
-2. 修改终端配置
-
-   ```bash
-   vim ~/.bashrc
-   ```
-
-   ```bash
-   export http_proxy="http://127.0.0.1:7890"
-   export https_proxy="http://127.0.0.1:7890"
-   ```
-
-2. 打开Clash，将`Port`（端口号）设置为`7890`
-
-3. 在`Profiles`导入机场（订阅地址），然后在`Proxies`设置源即可
-
-4. Chrome临时使用代理：`google-chrome-stable --proxy-server="http://127.0.0.1:7890"`
-
-**设置sudo保持代理**：
+**配置终端代理**：
 
 ```bash
-vim /etc/sudoers.d/05_proxy
+sudo vim /etc/proxychains.conf
 ```
 
 ```bash
-Defaults env_keep += "*_proxy *_PROXY"
+# 最后一行修改为：
+socks5  127.0.0.1 7890
 ```
 
 ### Minecraft我的世界
