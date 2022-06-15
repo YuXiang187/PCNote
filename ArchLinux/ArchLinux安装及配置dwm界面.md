@@ -155,7 +155,9 @@ alias P='sudo poweroff'
 alias R='sudo reboot'
 alias S='sudo systemctl hybrid-sleep'
 alias U='sudo pacman -Syyu'
-alias chromeproxy="google-chrome-stable --proxy-server=\"http://127.0.0.1:7890\""
+alias N='export http_proxy=http://127.0.0.1:7890;export https_proxy=http://127.0.0.1:7890'
+alias O='unset http_proxy;unset https_proxy'
+alias C="google-chrome-stable --proxy-server=\"http://127.0.0.1:7890\""
 ```
 
 安装fcitx输入法：
@@ -418,27 +420,22 @@ sudo pacman -S pcmanfm
 ### Clash + Proxychains科学上网
 
 ```bash
-yay -S clash-for-windows-bin # 浏览器代理
-sudo pacman -S proxychains # 终端代理
+yay -S clash-for-windows-bin
 ```
 
-注意：Clash如果无法在终端下载所需的安装文件请自行到AUR主页单击链接下载，下载下来的文件记得改名！
-
-**配置浏览器代理**：
+**配置代理**：
 
 1. 打开Clash，将`Port`（端口号）设置为`7890`
 2. 在`Profiles`导入机场（订阅地址），然后在`Proxies`设置源即可
-3. Chrome使用代理：`google-chrome-stable --proxy-server="http://127.0.0.1:7890"`
 
-**配置终端代理**：
+**通过sudo保持代理**：
 
 ```bash
-sudo vim /etc/proxychains.conf
+sudo vim /etc/sudoers.d/05_proxy
 ```
 
 ```bash
-# 最后一行修改为：
-socks5  127.0.0.1 7890
+Defaults env_keep += "*_proxy *_PROXY"
 ```
 
 ### Minecraft我的世界
