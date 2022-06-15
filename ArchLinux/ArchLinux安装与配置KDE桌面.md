@@ -215,13 +215,19 @@ EndSection
 
 ### NVIDIA独立显卡
 
+构建NVIDIA内核需要`linux-headers`，请先安装：
+
+```bash
+sudo pacman -S linux-headers
+```
+
 安装驱动：
 
 ```bash
 sudo pacman -S nvidia # GeForce 920以上
-yay -S nvidia-470xx-dkms # GeForce 630-920
-yay -S nvidia-390xx-dkms # GeForce 400/500/600
-yay -S nvidia-340xx-dkms # GeForce 8/9
+yay -S nvidia-470xx-dkms lib32-nvidia-utils # GeForce 630-920
+yay -S nvidia-390xx-dkms lib32-nvidia-utils # GeForce 400/500/600
+yay -S nvidia-340xx-dkms lib32-nvidia-utils # GeForce 8/9
 ```
 
 完成后重启系统（因为要屏蔽nouveau内核模块），接着手动创建配置文件：
