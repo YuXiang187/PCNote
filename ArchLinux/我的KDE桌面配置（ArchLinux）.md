@@ -115,8 +115,6 @@ yay -S typora-free # 免费版本
 yay -S typora # 收费版本
 ```
 
-安装主题：`typora-onedark-theme-v1.09.zip`
-
 ### WPS Office - 办公
 
 ```bash
@@ -162,27 +160,22 @@ sudo pacman -S kdeconnect
 ### Clash/Proxychains - 科学上网
 
 ```bash
-yay -S clash-for-windows-bin # 浏览器代理
-sudo pacman -S proxychains # 终端代理
+yay -S clash-for-windows-bin
 ```
 
-注意：Clash如果无法在终端下载所需的安装文件请自行到AUR主页单击链接下载，下载下来的文件记得改名！
-
-**配置浏览器代理**：
+**配置代理**：
 
 1. 打开Clash，将`Port`（端口号）设置为`7890`
 2. 在`Profiles`导入机场（订阅地址），然后在`Proxies`设置源即可
-3. Chrome使用代理：`google-chrome-stable --proxy-server="http://127.0.0.1:7890"`
 
-**配置终端代理**：
+**通过sudo保持代理**：
 
 ```bash
-sudo vim /etc/proxychains.conf
+sudo vim /etc/sudoers.d/05_proxy
 ```
 
 ```bash
-# 最后一行修改为：
-socks5  127.0.0.1 7890
+Defaults env_keep += "*_proxy *_PROXY"
 ```
 
 ### Minecraft我的世界
