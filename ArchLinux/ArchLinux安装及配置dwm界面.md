@@ -417,7 +417,7 @@ exec dwm
 sudo pacman -S pcmanfm
 ```
 
-### Clash + Proxychains科学上网
+### Clash科学上网
 
 ```bash
 yay -S clash-for-windows-bin
