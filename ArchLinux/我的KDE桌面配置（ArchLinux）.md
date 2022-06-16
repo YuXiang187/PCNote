@@ -157,7 +157,7 @@ sudo pacman -S bleachbit
 sudo pacman -S kdeconnect
 ```
 
-### Clash/Proxychains - 科学上网
+### Clash - 科学上网
 
 ```bash
 yay -S clash-for-windows-bin
