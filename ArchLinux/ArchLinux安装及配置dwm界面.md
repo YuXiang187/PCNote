@@ -414,7 +414,7 @@ exec dwm
 ### PCManFM文件管理器
 
 ```bash
-sudo pacman -S pcmanfm
+sudo pacman -S gvfs pcmanfm
 ```
 
 ### Clash科学上网
