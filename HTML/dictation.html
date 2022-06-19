@@ -105,10 +105,7 @@
                     title.innerHTML = line[1].trim() === text.value.trim() ? "回答正确" : text.value !== "" ? "回答错误" : "未作答";
                     answer.innerHTML = line[1];
                     isRespond = line[1].trim() !== text.value.trim();
-                    if ((new Date().getTime() - enterTime) > 400) {
-                        enterTime = new Date().getTime();
-                        new Audio("https://fanyi.sogou.com/reventondc/synthesis?text=" + line[1] + "&speed=1&lang=zh-CHS&from=translateweb&speaker=6").play();
-                    }
+                    new Audio("https://fanyi.sogou.com/reventondc/synthesis?text=" + line[1] + "&speed=1&lang=zh-CHS&from=translateweb&speaker=6").play();
                     break;
                 case false:
                     start();
@@ -122,20 +119,23 @@
 
     function enter() {
         text.addEventListener("keyup", function (e) {
-            switch (e.key) {
-                case 'Enter':
-                    e.preventDefault();
-                    check();
-                    break;
-                case 'Alt':
-                    e.preventDefault();
-                    text.value = "";
-                    break;
-                case 'Insert':
-                    if (column != null) {
-                        text.value = line[1];
-                    }
-                    break;
+            if ((new Date().getTime() - enterTime) > 300) {
+                enterTime = new Date().getTime();
+                switch (e.key) {
+                    case 'Enter':
+                        e.preventDefault();
+                        check();
+                        break;
+                    case 'Alt':
+                        e.preventDefault();
+                        text.value = "";
+                        break;
+                    case 'Insert':
+                        if (column != null) {
+                            text.value = line[1];
+                        }
+                        break;
+                }
             }
         })
     }
