@@ -844,10 +844,9 @@ $body.appendChild($switch);</textarea>
     function showAlert() {alert("点我没用哦，请点我右边的那些选项^_^");}
 
     function copyText(id) {
-        const e = document.getElementById(id);
-        e.select();
-        document.execCommand("Copy");
-        self.location.href = "#"
+        navigator.clipboard.writeText(document.getElementById(id).value).then(function () {
+            self.location.href = "#"
+        });
     }
 
     window.onscroll = function () {scrollFunction()};
