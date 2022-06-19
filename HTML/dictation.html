@@ -76,7 +76,7 @@
             let fileReader = new FileReader();
             fileReader.onload = function () {
                 column = this.result.split("\n");
-                init();
+                start();
             }
             fileReader.readAsText(ev.dataTransfer.files[0], 'utf-8');
         }, false);
@@ -87,7 +87,7 @@
     let text = document.getElementById("text");
     let answer = document.getElementById("answer");
 
-    function init() {
+    function start() {
         text.value = "";
         title.innerHTML = "请回答";
         line = column[Math.floor(Math.random() * column.length)].split(",");
@@ -96,34 +96,40 @@
         isRespond = true;
     }
 
-    function enterText() {
+    function check() {
+        if (column != null) {
+            switch (isRespond) {
+                case true:
+                    title.innerHTML = line[1].trim() === text.value.trim() ? "回答正确" : text.value !== "" ? "回答错误" : "未作答";
+                    answer.innerHTML = line[1];
+                    isRespond = line[1].trim() !== text.value.trim();
+                    new Audio("https://fanyi.sogou.com/reventondc/synthesis?text=" + line[1] + "&speed=1&lang=zh-CHS&from=translateweb&speaker=6").play();
+                    break;
+                case false:
+                    start();
+                    break;
+            }
+        } else {
+            alert("请先拖拽TXT文件上传到本页面！！");
+            text.value = "";
+        }
+    }
+
+    function enter() {
         text.addEventListener("keyup", function (e) {
             switch (e.key) {
                 case 'Enter':
                     e.preventDefault();
-                    if (column != null) {
-                        switch (isRespond) {
-                            case true:
-                                title.innerHTML = line[1].trim() === text.value.trim() ? "回答正确" : text.value !== "" ? "回答错误" : "未作答";
-                                answer.innerHTML = line[1];
-                                isRespond = line[1].trim() !== text.value.trim();
-                                new Audio("https://fanyi.sogou.com/reventondc/synthesis?text=" + line[1] + "&speed=1&lang=zh-CHS&from=translateweb&speaker=6").play();
-                                break;
-                            case false:
-                                init();
-                                break;
-                        }
-                    } else {
-                        alert("请先拖拽TXT文件上传到本页面！！");
-                        text.value = "";
-                    }
+                    check();
                     break;
                 case 'Alt':
                     e.preventDefault();
                     text.value = "";
                     break;
                 case 'Insert':
-                    if (column != null) {text.value = line[1];}
+                    if (column != null) {
+                        text.value = line[1];
+                    }
                     break;
             }
         })
