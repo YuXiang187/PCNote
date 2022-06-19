@@ -59,7 +59,7 @@
 <div id="main">
     <h1 style="text-align:center"><span id="title">自助听写</span></h1>
     <h3 style="text-align:center"><span id="content">此处显示听写内容</span></h3>
-    <p style="text-align:center"><input id="text" title="Enter：下一个/检查对错 Insert：自动填充正确答案 Alt：清空内容" onclick="enterText()" placeholder="请输入你的答案"/></p>
+    <p style="text-align:center"><input id="text" title="Enter：下一个/检查对错 Insert：自动填充正确答案 Alt：清空内容" onclick="enter()" placeholder="请输入你的答案"/></p>
     <h5 style="text-align:center"><span id="answer">此处显示答案</span></h5>
 </div>
 <script>
@@ -69,6 +69,8 @@
     column = null;
     let isRespond;
     isRespond = false;
+    let enterTime;
+    enterTime = new Date().getTime();
 
     window.onload = function () {
         document.getElementById("main").addEventListener("drop", function (ev) {
@@ -103,7 +105,10 @@
                     title.innerHTML = line[1].trim() === text.value.trim() ? "回答正确" : text.value !== "" ? "回答错误" : "未作答";
                     answer.innerHTML = line[1];
                     isRespond = line[1].trim() !== text.value.trim();
-                    new Audio("https://fanyi.sogou.com/reventondc/synthesis?text=" + line[1] + "&speed=1&lang=zh-CHS&from=translateweb&speaker=6").play();
+                    if ((new Date().getTime() - enterTime) > 400) {
+                        enterTime = new Date().getTime();
+                        new Audio("https://fanyi.sogou.com/reventondc/synthesis?text=" + line[1] + "&speed=1&lang=zh-CHS&from=translateweb&speaker=6").play();
+                    }
                     break;
                 case false:
                     start();
