@@ -523,3 +523,16 @@ yay -S sublime-text-4
 ```bash
 sudo pacman -S gimp
 ```
+
+### XP-Pen数位板驱动
+
+```bash
+yay -S xp-pen-tablet
+```
+
+需要以root账户运行的解决办法：
+
+```bash
+sudo chown $(whoami) /usr/lib/pentablet
+sudo chmod +x /usr/lib/pentablet/pentablet
+```
