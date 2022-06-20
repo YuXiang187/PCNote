@@ -536,3 +536,11 @@ yay -S xp-pen-tablet
 sudo chown $(whoami) /usr/lib/pentablet
 sudo chmod +x /usr/lib/pentablet/pentablet
 ```
+
+Chrome手写输入插件：**Google 输入工具**
+
+如果你有电子白板的需求，可以安装OpenBoard
+
+```bash
+yay -S openboard
+```
