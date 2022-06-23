@@ -15,7 +15,7 @@ dwm必装补丁（1个）：**systray**
 
 st必装补丁（3个）：
 
-* **alpha**（自行修改透明度：7.5）
+* **alpha**（自行修改透明度：0.75）
 * **anysize**
 * **scrollback**
 
@@ -58,8 +58,8 @@ static const Rule rules[] = {
 ```bash
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "Tile",      tile },    /* first entry is default */
-	{ "Null",      NULL },    /* no layout function means floating behavior */
+	{ "Tile",     tile },    /* first entry is default */
+	{ "Null",     NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 };
 ```
