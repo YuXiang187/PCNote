@@ -544,3 +544,49 @@ Chrome手写输入插件：**Google 输入工具**
 ```bash
 yay -S openboard
 ```
+
+### Android Studio安卓开发
+
+```bash
+yay -S android-studio
+```
+
+修复启动时空白界面的问题：
+
+```bash
+sudo vim /etc/environment
+```
+
+```bash
+_JAVA_AWT_WM_NONREPARENTING=1
+```
+
+Git图形界面管理器：
+
+```bash
+yay -S gitkraken
+```
+
+## 8.常规设置
+
+### 调节鼠标灵敏度
+
+安装`xorg-xinput`：
+
+```bash
+sudo pacman -S xorg-xinput
+```
+
+查看鼠标ID：
+
+```bash
+xinput list
+```
+
+设置鼠标灵敏度：
+
+```bash
+xinput --set-prop 8 'libinput Accel Speed' -0.6
+```
+
+注意：“-0.6”是要设置的鼠标灵敏度（范围为[-1,1]），“8”要修改为你自己鼠标的ID！
