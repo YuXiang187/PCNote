@@ -155,7 +155,7 @@ alias P='sudo poweroff'
 alias R='sudo reboot'
 alias S='sudo systemctl hybrid-sleep'
 alias U='sudo pacman -Syyu'
-alias N='export http_proxy=http://127.0.0.1:7890;export https_proxy=http://127.0.0.1:7890'
+alias N='export https_proxy=http://127.0.0.1:7890;export http_proxy=http://127.0.0.1:7890;export all_proxy=socks5://127.0.0.1:7890'
 alias O='unset http_proxy;unset https_proxy'
 alias C="google-chrome-stable --proxy-server=\"http://127.0.0.1:7890\""
 ```
