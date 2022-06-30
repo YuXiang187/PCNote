@@ -474,6 +474,22 @@ yay -S minecraft-launcher
 
 ---
 
+PVP玩家可以选择：
+
+Lunar客户端：
+
+```bash
+yay -S lunar-client
+```
+
+Badlion客户端：
+
+```bash
+yay -S badlion-client
+```
+
+---
+
 解决Minecraft旧版本无法输入中文的问题：
 
 **1.安装软件包**
@@ -543,7 +559,7 @@ xbindkeys &
 exec your_window_manager
 ```
 
-完成了，以后在打开MC聊天框时按下F12输入你想输入的内容，然后按下回车就可以直接输入中文了
+完成了，以后在打开MC时按下F12输入你想输入的内容，然后按下回车就可以直接输入中文了
 
 ### 火焰截图
 
