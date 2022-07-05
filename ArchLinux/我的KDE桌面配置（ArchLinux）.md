@@ -69,7 +69,13 @@ Smart Video Wallpaper应用后桌面会黑屏，解决办法如下：
 sudo pacman -S mpv gst-plugins-base gst-plugins-ugly gst-libav gst-plugins-bad
 ```
 
-重启电脑后生效
+Simple Monitor无法显示信息的解决办法如下：
+
+```bash
+sudo pacman -S ksysguard
+```
+
+以上设置重启系统后生效
 
 ## 2.安装软件及其配置
 
@@ -202,6 +208,95 @@ yay -S minecraft-launcher
 安装Forge，请前往[https://files.minecraftforge.net](https://files.minecraftforge.net)下载文件，然后使用`java -jar <file>`启动下载的文件
 
 安装Optifine，请前往[https://optifine.net](https://optifine.net)下载文件，然后放到`.minecraft`下的`mods`文件夹
+
+---
+
+PVP玩家可以选择：
+
+Lunar客户端：
+
+```bash
+yay -S lunar-client
+```
+
+Badlion客户端：
+
+```bash
+yay -S badlion-client
+```
+
+---
+
+解决Minecraft旧版本无法输入中文的问题：
+
+**1.安装软件包**
+
+```bash
+sudo pacman -S zenity xbindkeys xdotool
+```
+
+**2.设置脚本**
+
+```bash
+vim ~/.mcinput.sh
+```
+
+下面的脚本来自依云's Blog，链接：[https://blog.lilydjwg.me/2015/5/17/input-chinese-to-minecraft-in-linux.93167.html](https://blog.lilydjwg.me/2015/5/17/input-chinese-to-minecraft-in-linux.93167.html)，非常感谢他解决了我的问题
+
+```bash
+chars=$(zenity --title 中文输入 --text 中文输入 --width 500 --entry 2>/dev/null)
+sleep 0.1
+xdotool key --delay 150 Escape t
+sleep 0.2
+xdotool type --delay 150 "$chars"
+xdotool key Return
+```
+
+**3.设置全局热键F12**
+
+生成默认配置文件
+
+```bash
+xbindkeys --defaults > ~/.xbindkeysrc
+```
+
+辅助按键显示，在空白窗口弹出后按下F12
+
+```bash
+xbindkeys -k
+```
+
+接着把终端输出的内容复制到`~/.xbindkeysrc`，再编辑一下该按键要执行的命令，如：
+
+```bash
+vim ~/.xbindkeysrc
+```
+
+```bash
+"sh ~/.mcinput.sh"
+    m:0x0 + c:96
+    F12
+```
+
+最后启动Xbindkeys
+
+```bash
+xbindkeys
+```
+
+设置进入桌面自动启动Xbindkeys
+
+```bash
+vim ~/.xinitrc
+```
+
+```bash
+# 添加到exec命令之前
+xbindkeys &
+exec your_window_manager
+```
+
+完成了，以后在打开MC时按下F12输入你想输入的内容，然后按下回车就可以直接输入中文了
 
 ### Sublime Text - 文本编辑
 
