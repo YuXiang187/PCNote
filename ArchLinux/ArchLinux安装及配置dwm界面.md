@@ -147,6 +147,7 @@ vim ~/.bashrc
 ```
 
 ```bash
+echo -e "DO NOT USE \"sudo rm -rf /*\" ON THIS PC."
 alias l='lsblk'
 alias n='neofetch'
 alias e='exit'
