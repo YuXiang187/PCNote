@@ -186,8 +186,7 @@ mount /dev/sda4 /mnt/home
 挂载EFI分区：
 
 ```bash
-mkdir /mnt/boot
-mkdir /mnt/boot/EFI
+mkdir -p /mnt/boot/EFI
 mount /dev/sda1 /mnt/boot/EFI
 ```
 
