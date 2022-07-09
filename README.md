@@ -1,8 +1,11 @@
 # PC 笔记
 
+该笔记所有权归原作者`YuXiang187`所有，转载请标注来源，**不得用于商业目的**！！！
+
 ## ArchLinux 笔记
 
 * [ArchLinux安装.md](./ArchLinux/ArchLinux安装.md)
+* [ArchLinux+Windows10双系统安装.md](./ArchLinux/ArchLinux+Windows10双系统安装.md)
 * [ArchLinux安装及配置dwm界面.md](./ArchLinux/ArchLinux安装及配置dwm界面.md)
 * [ArchLinux安装与配置KDE桌面.md](./ArchLinux/ArchLinux安装与配置KDE桌面.md)
 * [ArchLinux设置全局热键.md](./ArchLinux/ArchLinux设置全局热键.md)
