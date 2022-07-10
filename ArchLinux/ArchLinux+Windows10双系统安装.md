@@ -2,10 +2,12 @@
 
 ## 1.安装Windows10
 
-1. 安装完Windows10后，右键“此电脑”，单击“管理(G)”，单击右侧树状图的“磁盘管理”选项
-2. 选中需要开辟新空间的磁盘，右键弹出菜单，选择“压缩卷(H)…”
-3. 单击“压缩(S)”，然后选择刚刚压缩的未分配的卷，右键弹出菜单，选择“新建简单卷(I)…”
-   在“格式化分区”步骤中选择“不要格式化这个卷(D)”，其他全部默认，完成
+在安装Windows10的过程中，最好这样分区：
+
+* 用于存放Windows系统的分区（推荐80G）
+* 用于存放Windows文档的分区（推荐100G）
+* 用于存放Linux的Swap分区（推荐2G）
+* 用于存放Linux的分区（推荐100G）
 
 ## 2.安装ArchLinux
 
@@ -73,12 +75,26 @@ vim /etc/pacman.d/mirrorlist
 
 ### 5.格式化磁盘分区
 
-使用`fdisk -l`来查看当前磁盘状况，记住**EFI System分区**以及刚刚新建的**Microsoft basic data分区**对应的路径
-
-格式化Microsoft basic data分区：
+将用于存放Linux的分区转为Linux filesystem、用于存放Linux的Swap分区转为Linux swap：
 
 ```bash
-mkfs.ext4 /dev/nvme0n1p5
+cfdisk /dev/sda
+```
+
+格式化Linux filesystem分区：
+
+```bash
+mkfs.ext4 /dev/sda6
+```
+
+格式化Linux swap分区：
+
+```bash
+mkswap -f /dev/sda5
+```
+
+```bash
+swapon /dev/sda5
 ```
 
 ### 6.挂载磁盘
@@ -86,14 +102,14 @@ mkfs.ext4 /dev/nvme0n1p5
 挂载根目录：
 
 ```bash
-mount /dev/nvme0n1p5 /mnt
+mount /dev/sda6 /mnt
 ```
 
 挂载EFI分区：
 
 ```bash
 mkdir -p /mnt/boot/EFI
-mount /dev/nvme0n1p2 /mnt/boot/EFI
+mount /dev/sda2 /mnt/boot/EFI
 ```
 
 ### 7.安装ArchLinux
@@ -236,7 +252,13 @@ systemctl enable dhcpcd
 systemctl shart dhcpcd
 ```
 
-再次生成`grub.cfg`配置文件，会自动在Grub引导界面加入Windows10启动选项
+开启Grub的OS-Prober：
+
+```bash
+vim /etc/default/grub
+```
+
+将最后一行的`#GRUB_DISABLE_OS_PROBER=false`前面的注释去掉，然后重新生成配置文件：
 
 ```bash
 grub-mkconfig -o /boot/grub/grub.cfg
