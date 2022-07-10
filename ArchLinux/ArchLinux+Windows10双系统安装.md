@@ -2,12 +2,18 @@
 
 ## 1.安装Windows10
 
-在安装Windows10的过程中，最好这样分区：
+在安装Windows10的过程中，推荐这样分区：
 
 * 用于存放Windows系统的分区（推荐80G）
 * 用于存放Windows文档的分区（推荐100G）
 * 用于存放Linux的Swap分区（推荐2G）
 * 用于存放Linux的分区（推荐100G）
+
+在安装完Windows10后要给用于存放Windows文档的分区装上驱动器号和盘符，否则Windows资源管理器将无法识别该分区，具体操作步骤如下：
+
+1. 右键桌面图标“此电脑”，单击“管理(G)”
+2. 在右侧树状图中单击“磁盘管理”
+3. 选中用于存放Windows文档的分区，右键选择“更改驱动器号和路径(C)…”，按照提示完成即可
 
 ## 2.安装ArchLinux
 
@@ -213,7 +219,7 @@ pacman -S amd-ucode # AMD的CPU
 安装必备包：
 
 ```bash
-pacman -S grub efibootmgr
+pacman -S grub efibootmgr os-prober
 ```
 
 安装Grub：
@@ -222,7 +228,13 @@ pacman -S grub efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=GRUB
 ```
 
-生成配置文件：
+开启Grub的OS-Prober：
+
+```bash
+vim /etc/default/grub
+```
+
+将最后一行的`#GRUB_DISABLE_OS_PROBER=false`前面的注释去掉，然后重新生成配置文件：
 
 ```bash
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -250,18 +262,6 @@ systemctl enable dhcpcd
 
 ```bash
 systemctl shart dhcpcd
-```
-
-开启Grub的OS-Prober：
-
-```bash
-vim /etc/default/grub
-```
-
-将最后一行的`#GRUB_DISABLE_OS_PROBER=false`前面的注释去掉，然后重新生成配置文件：
-
-```bash
-grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 编辑`/boot/grub/grub.cfg`，设置开机启动等待时间
