@@ -4,10 +4,10 @@
 
 在安装Windows10的过程中，推荐这样分区：
 
-* 用于存放Windows系统的分区（推荐80G）
-* 用于存放Windows文档的分区（推荐100G）
-* 用于存放Linux的Swap分区（推荐2G）
-* 用于存放Linux的分区（推荐100G）
+* 用于存放Windows系统的分区（推荐80G，也就是81920MB）
+* 用于存放Windows文档的分区（推荐100G，也就是102400MB）
+* 用于存放Linux的Swap分区（推荐2G，也就是2048MB）
+* 用于存放Linux的分区（推荐100G，也就是102400MB）
 
 在安装完Windows10后要给用于存放Windows文档的分区装上驱动器号和盘符，否则Windows资源管理器将无法识别该分区，具体操作步骤如下：
 
@@ -90,17 +90,17 @@ cfdisk /dev/sda
 格式化Linux filesystem分区：
 
 ```bash
-mkfs.ext4 /dev/sda6
+mkfs.ext4 /dev/sda7
 ```
 
 格式化Linux swap分区：
 
 ```bash
-mkswap -f /dev/sda5
+mkswap -f /dev/sda6
 ```
 
 ```bash
-swapon /dev/sda5
+swapon /dev/sda6
 ```
 
 ### 6.挂载磁盘
@@ -108,7 +108,7 @@ swapon /dev/sda5
 挂载根目录：
 
 ```bash
-mount /dev/sda6 /mnt
+mount /dev/sda7 /mnt
 ```
 
 挂载EFI分区：
@@ -234,7 +234,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=GRUB
 vim /etc/default/grub
 ```
 
-将最后一行的`#GRUB_DISABLE_OS_PROBER=false`前面的注释去掉，然后重新生成配置文件：
+将最后一行的`#GRUB_DISABLE_OS_PROBER=false`前面的注释去掉，然后生成配置文件：
 
 ```bash
 grub-mkconfig -o /boot/grub/grub.cfg
