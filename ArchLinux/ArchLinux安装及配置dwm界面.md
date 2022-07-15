@@ -41,8 +41,29 @@ Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
 
 ```bash
 pacman -Syyu
+```
+
+安装密钥
+
+如果你安装的是双系统，那很有可能会出现`could not be locally signed`的情况，可以先执行以下的命令：
+
+```bash
+pacman -Syu haveged
+systemctl start haveged
+systemctl enable haveged
+
+rm -fr /etc/pacman.d/gnupg
+pacman-key --init
+pacman-key --populate archlinux
+```
+
+再安装archlinuxcn密钥：
+
+```bash
 pacman -S archlinuxcn-keyring
 ```
+
+如果你只装ArchLinux这一个系统可以直接执行上面的命令
 
 ## 2.安装X窗系统、字体
 
